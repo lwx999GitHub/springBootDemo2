@@ -13,9 +13,10 @@ import java.util.Random;
 
 @RestController
 public class LoginController {
-
+    private static Integer i = 0;
     Map sessionMap = new HashMap();
     ThreadLocal<Object> threadLocal = new ThreadLocal<Object>();
+    private static Object obj = new Object();
 
     @GetMapping("/login")
     public String login(@RequestParam String userName, @RequestParam String password) throws InterruptedException {
@@ -36,6 +37,19 @@ public class LoginController {
         threadLocal.set(user);
         User u = (User) threadLocal.get();
         return u.getUsername() + "," + u.getPassword();
+    }
+
+    /**
+     * 测试synchrnoized
+     * @return
+     * @throws InterruptedException
+     */
+    @GetMapping("/toThread")
+    public Integer toThread() throws InterruptedException {
+        synchronized (obj) {
+            System.out.println(++i);
+        }
+    return i;
     }
 //ThreadLocal使用场景：
     //1.DB要保存数据操作人用户信息（userId），你需要怎么做？sql怎么写？
