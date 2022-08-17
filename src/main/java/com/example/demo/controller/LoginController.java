@@ -51,6 +51,28 @@ public class LoginController {
         }
     return i;
     }
+
+    /**
+     * 测试可重入锁
+     * @return
+     * @throws InterruptedException
+     */
+    @GetMapping("/toReentrantLock")
+    public Integer toReentrantLock() throws InterruptedException {
+        synchronized (obj) {
+            Integer i=M2();
+        }
+        return i;
+    }
+
+    public Integer M2() throws InterruptedException {
+        synchronized (obj) {
+           i++;
+        }
+        return i;
+    }
+
+
 //ThreadLocal使用场景：
     //1.DB要保存数据操作人用户信息（userId），你需要怎么做？sql怎么写？
     //答：用户登入系统成功后，把用户信息放到MAP(缓存)，key为sessionId,value为用户信息。然后返回sessionId.
